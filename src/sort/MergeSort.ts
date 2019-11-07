@@ -4,15 +4,17 @@ import { SortHelper } from "./SortHelper";
 export class MergeSort extends SortHelper implements Sort {
 
     sort(nums: number[]): number[] {
-        if (nums.length <= 1) {
+        const numsLength = nums.length;
+
+        if (numsLength <= 1) {
             return nums;
         }
 
         let left: number[] = [];
         let right: number[] = [];
 
-        for (let i = 0; i < nums.length; i++) {
-            if (i < nums.length / 2) {
+        for (let i = 0; i < numsLength; i++) {
+            if (i < Math.round(numsLength / 2)) {
                 left.push(nums[i]);
             }
             else {
@@ -28,7 +30,6 @@ export class MergeSort extends SortHelper implements Sort {
 
     merge(left: number[], right: number[]): number[] {
         let result: number[] = [];
-
         while (this.isNotEmptyArray(left) && this.isNotEmptyArray(right)) {
             if (left[0] < right[0]) {
                 result.push(left[0]);
@@ -42,7 +43,7 @@ export class MergeSort extends SortHelper implements Sort {
 
         while (this.isNotEmptyArray(left)) {
             result.push(left[0]);
-            right = left.slice(1);
+            left = left.slice(1);
         }
 
         while (this.isNotEmptyArray(right)) {
