@@ -1,0 +1,4 @@
+- install nodejs
+- install typescript
+- install eslint: ```$ npm install -g eslint```
+- clean and run: ```$ rm -rf out/; tsc; node out/AppSort.js```
