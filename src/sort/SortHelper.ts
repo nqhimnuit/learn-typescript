@@ -16,4 +16,17 @@ export class SortHelper {
         return [b, a];
     }
 
+    /**
+     * check for a pair number is in order or not
+     * @param small smaller number
+     * @param large larger number
+     */
+    isNotInOrder(small: number, large: number): boolean {
+        return small > large;
+    }
+
+    isNotEmptyArray(array: number[]): boolean {
+        return (array && array.length) !== 0;
+    }
+
 }
