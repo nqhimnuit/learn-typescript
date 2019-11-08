@@ -5,9 +5,6 @@ import { Sort } from "./sort/Sort";
 
 const ARRAY_LENGTH = 10000;
 
-const UNSORTED_ARRAY: number[] = initializeArray(ARRAY_LENGTH);
-Object.freeze(UNSORTED_ARRAY);
-
 function getRandomInt(max: number): number {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -27,29 +24,29 @@ function isSortedArray(nums: number[]): boolean {
     });
 }
 
-function sortAlgorithm(sortAlgorithm: Sort): void {
-    if (isSortedArray(UNSORTED_ARRAY)) {
-        console.error('!!! array is already sorted wont do anything !!!');
-        return;
+function sortNumbers(unsortedArray: number[]) {
+    Object.freeze(unsortedArray);
+
+    function sortAlgorithm(sortAlgorithm: Sort) {
+        let start: number = Date.now();
+        const sortedArray = sortAlgorithm.sort(unsortedArray);
+        let timeTaken = Date.now() - start;
+        if (isSortedArray(sortedArray)) {
+            console.log(`--- used ${sortAlgorithm.sortName} to sort array, took ${timeTaken} ms`);
+        }
+        else {
+            console.error('!!! cannot sort array !!!');
+        }
     }
 
-    let start: number = Date.now();
-    let sortedArray = sortAlgorithm.sort(UNSORTED_ARRAY);
-    let timeTaken: number = Date.now() - start;
-
-    let isSorted: boolean = isSortedArray(sortedArray);
-    if (isSorted) {
-        console.log(`--- Sorted with ${sortAlgorithm.sortName}, took ${timeTaken} ms`);
-    }
-    else {
-        console.error('!!! cannot sort array !!!');
+    return {
+        mergeSort: () => { sortAlgorithm(new MergeSort()) },
+        insertionSort: () => { sortAlgorithm(new InsertionSort()) },
+        bubbleSort: () => { sortAlgorithm(new BubbleSort()) }
     }
 }
 
-function sortNumbers() {
-    sortAlgorithm(new MergeSort());
-    sortAlgorithm(new InsertionSort());
-    sortAlgorithm(new BubbleSort());
-}
-
-sortNumbers();
+let sort = sortNumbers(initializeArray(ARRAY_LENGTH));
+sort.mergeSort();
+sort.bubbleSort();
+sort.insertionSort();
