@@ -2,6 +2,7 @@ import { Sort } from "./Sort";
 import { SortHelper } from "./SortHelper";
 
 export class MergeSort extends SortHelper implements Sort {
+    sortName: String = "Merge Sort";
 
     sort(nums: number[]): number[] {
         const numsLength = nums.length;

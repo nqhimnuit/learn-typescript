@@ -29,4 +29,7 @@ export class SortHelper {
         return (array && array.length) !== 0;
     }
 
+    deepCopy(array: number[]): number[] {
+        return [...array];
+    }
 }
