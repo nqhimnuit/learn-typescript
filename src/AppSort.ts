@@ -27,29 +27,18 @@ function isSortedArray(nums: number[]): boolean {
     });
 }
 
-function sortAlgorithm(sortAlgorithm: Sort): void {
-    if (isSortedArray(UNSORTED_ARRAY)) {
-        console.error('!!! array is already sorted wont do anything !!!');
-        return;
-    }
-
-    let start: number = Date.now();
-    let sortedArray = sortAlgorithm.sort(UNSORTED_ARRAY);
-    let timeTaken: number = Date.now() - start;
-
-    let isSorted: boolean = isSortedArray(sortedArray);
-    if (isSorted) {
-        console.log(`--- Sorted with ${sortAlgorithm.sortName}, took ${timeTaken} ms`);
+function sortNumber(nums: number[], sortAlgorithm: Sort, check: (nums: number[]) => boolean): void {
+    let start = Date.now();
+    let sortedArray = sortAlgorithm.sort(nums);
+    let timeTaken = Date.now() - start;
+    if (check(sortedArray)) {
+        console.log(`--- sorted array with ${sortAlgorithm.sortName} took ${timeTaken} ms`);
     }
     else {
-        console.error('!!! cannot sort array !!!');
+        console.log('!!! cannot sort array !!!');
     }
 }
 
-function sortNumbers() {
-    sortAlgorithm(new MergeSort());
-    sortAlgorithm(new InsertionSort());
-    sortAlgorithm(new BubbleSort());
-}
-
-sortNumbers();
+sortNumber(UNSORTED_ARRAY, new MergeSort(), isSortedArray);
+sortNumber(UNSORTED_ARRAY, new InsertionSort(), isSortedArray);
+sortNumber(UNSORTED_ARRAY, new BubbleSort(), isSortedArray);
