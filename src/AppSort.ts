@@ -14,7 +14,7 @@ function initializeArray(arrayLength: number): number[] {
   for (let i = 0; i < arrayLength; i++) {
     nums.push(getRandomInt(arrayLength));
   }
-  console.log('unsorted array = ', nums);
+  console.log('unsorted array initialized!');
   return nums;
 }
 
@@ -24,30 +24,43 @@ function isSortedArray(nums: number[]): boolean {
   });
 }
 
+function sortWithAlgorithm(nums: any, sortAlgorithm: Sort) {
+  if (isSortedArray(nums)) {
+    throw `array is already sorted before using algorithm ${sortAlgorithm.sortName}`
+  }
+
+  let start: number = Date.now();
+  const sortedNums: number[] = sortAlgorithm.sort(<number[]>nums);
+  let timeTaken: number = Date.now() - start;
+
+  console.log(`${sortAlgorithm.sortName} took ${timeTaken} ms to sort`);
+
+  if (isSortedArray(sortedNums)) {
+    return nums;
+  }
+
+  return 'there is something wrong with sort algorithm';
+}
+
 new Promise(
   (resolve, reject) => {
-    let unsortedArray = initializeArray(2);
+    let unsortedArray = initializeArray(30000);
     if (!isSortedArray(unsortedArray)) {
       resolve(unsortedArray);
     }
     else {
-      let errorMsg = 'array is already sorted, nothing to do';
-      reject(errorMsg);
+      reject('initialized array is already sorted, nothing to do');
     }
   })
   .then(
-    function (nums) {
-      let mergeSort: Sort = new MergeSort();
-      const sortedNums: number[] = mergeSort.sort(<number[]>nums);
-      console.log('sorting is done');
-      if (isSortedArray(sortedNums)) {
-        return sortedNums;
-      }
-      return "there is something wrong with sort algorithm";
-    },
-    function (error) {
-      throw `there is something wrong with sort algorithm: '${error}'`;
-    })
+    (unsortedArray) => sortWithAlgorithm(unsortedArray, new BubbleSort),
+    (error) => { throw `there is something wrong: '${error}'` })
   .then(
-    (nums) => { console.log('sorting successful: ', nums) })
+    (unsortedArray) => sortWithAlgorithm(unsortedArray, new MergeSort),
+    (error) => { throw `there is something wrong: '${error}'` })
+  .then(
+    (unsortedArray) => sortWithAlgorithm(unsortedArray, new InsertionSort),
+    (error) => { throw `there is something wrong: '${error}'` })
+  .then(
+    (nums) => { console.log('sorting successful!') })
   .catch(function (error) { console.log(error) });
